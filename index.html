@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Segundo Mes 💌</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500;1,600&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@500;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --night-deep: #100a1f;
+            --night-mid: #1d1435;
+            --night-light: #2a1f47;
+            --star: #fff6e0;
+            --gold: #e8c07d;
+            --rose: #e8a6b8;
+            --deep-rose: #c4607a;
+            --paper: #fff9f2;
+            --plum: #3c2740;
+            --plum-soft: #7c6082;
+        }
+
+
+        *{ box-sizing:  border-box; }
+
+        html, body{ margin: 0; padding: 0; }
+
+        body{
+            min-height: 100vh;
+            background: radial-gradient(ellipse at top , var (--night-mid)0%, var(--night-deep)65%);
+            font-family: 'Quicksand', sans-serif;
+            color: var(--star);
+            overflow-x: hidden ;
+        }
+        body.lock-scroll{ overflow: hidden; height: 100vh; }
+        @media (prefers-reduced-motion:  reduce ){
+            *{ animation-duration:  0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important;}
+        }
+
+        /* ================= AMBIENT BACKGROUND ================= */
+         #sky{ position: fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+         .star{ position:absolute; background: var(--star); border-radius:50%; animation: twinkle ease-in-out infinite; }
+          @keyframes twinkle{ 0%,100%{ opacity:.15; } 50%{ opacity:1; } }
+
+         .light{ position:absolute; width:9px; height:9px; border-radius:50%; box-shadow:0 0 10px currentColor, 0 0 2px currentColor; animation: twinkle ease-in-out infinite; }
+
+         #sparkles{ position: fixed; inset:0; z-index:1; overflow:hidden; pointer-events:none; }
+         .spark{ position:absolute; top:-8%; font-size:1.1rem; opacity:.6; animation: fall linear infinite, sway ease-in-out infinite; }
+         .glint{ position:absolute; top:-6%; border-radius:50%; background: radial-gradient(circle, #ff8a9a, #d81e3e); box-shadow: 0 0 8px rgba(216,30,62,.85), 0 0 3px rgba(255,120,140,.9); opacity:.85; animation: fall linear infinite, sway ease-in-out infinite; }
+         @keyframes fall{ to{ transform: translateY(112vh); } }
+         @keyframes sway{ 0%,100%{ margin-left:0; } 50%{ margin-left:36px; } }
+
+         @keyframes fadeIn{ from{ opacity:0; } to{ opacity:1; } }
+         @keyframes pulse{ 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.08); } }
+
+
+
+           /* ================= FULLSCREEN SCENES ================= */
+           .scene.overlay{
+            position: fixed; inset:0; z-index:10;
+            display:none; flex-direction:column; align-items:center; justify-content:center;
+            text-align:center; padding: 24px;
+            background: radial-gradient(ellipse at center, rgba(29,20,53,0.88), rgba(16,10,31,0.98));
+           }
+          .scene.overlay.active{ display:flex; animation: fadeIn .6s ease; }
+
+
+            /* ---- Envelope ---- */
+            .envelope-wrap{ position:relative; width:440px; height:420px; margin: 0 auto 10px; display:flex; align-items:center; justify-content:center; }
+            .heart-frame{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+            .pixel-heart{ position:absolute; top:50%; left:50%; display:grid; grid-template-columns: repeat(9, 1fr); grid-template-rows: repeat(8, 1fr); animation: pixel-beat 1s steps(4) infinite; }
+            .pixel-cell{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+            .pixel-cell .unit{ display:inline-block; line-height:1; animation: twinkle ease-in-out infinite; }
+            @keyframes pixel-beat{ 0%,100%{ transform: translate(-50%,-50%) scale(1); } 50%{ transform: translate(-50%,-50%) scale(1.07); } }
+            .envelope{ position:relative; z-index:2; width:170px; height:115px; cursor:pointer; perspective:700px; }
+            .env-back{ position:absolute; inset:0; border-radius:6px; background: linear-gradient(135deg, var(--deep-rose), var(--rose)); box-shadow: 0 18px 40px rgba(0,0,0,.5); z-index:1; }
+            .env-letter{ position:absolute; left:10%; right:10%; bottom:8%; height:0; background: var(--paper); border-radius:4px 4px 0 0; transition: height .6s ease .25s; z-index:2; }
+            .env-flap{ position:absolute; top:0; left:0; width:100%; height:58%; background: var(--rose); clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top center; transition: transform .8s cubic-bezier(.4,.2,.2,1); z-index:3; }
+            .env-seal{ position:absolute; top:34%; left:50%; transform:translate(-50%,-50%); width:42px; height:42px; border-radius:50%; background: radial-gradient(circle at 35% 30%, var(--rose), var(--deep-rose)); display:flex; align-items:center; justify-content:center; font-size:1.15rem; box-shadow:0 4px 12px rgba(0,0,0,.4); transition: opacity .35s ease; z-index:4; animation: pulse 2.2s ease-in-out infinite; }
+            .envelope.open .env-flap{ transform: rotateX(180deg); }
+            .envelope.open .env-seal{ opacity:0; }
+            .envelope.open .env-letter{ height:42%; }
+
+            .hint{ font-size:.85rem ; color: var (--star); opacity: .75; letter-spacing: .04em;}
+
+           /* ---- Question / mini game ---- */
+           .eyebrow{ text-transform:uppercase; letter-spacing:.22em; font-size:.7rem; font-weight:700; color: var(--gold); margin-bottom:12px; }
+           .question-title{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size: clamp(1.7rem, 6vw, 2.5rem); color: var(--paper); margin: 0 0 30px; }
+           .options{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+           .opt-btn{ background: rgba(255,255,255,.08); border:1px solid var(--rose); color: var(--paper); padding: 12px 22px; border-radius:30px; font-family:'Quicksand', sans-serif; font-weight:600; font-size:.95rem; cursor:pointer; transition: all .3s ease; }
+           .opt-btn:hover{ background: var(--rose); color: var(--night-deep); }
+           .opt-btn:focus-visible{ outline: 2px solid var(--gold); outline-offset:2px; }
+           .opt-btn.correct{ background: var(--gold); color: var(--night-deep); border-color: var(--gold); }
+           .opt-btn.wrong{ animation: shake .4s ease; border-color:#e88a8a; }
+           .opt-btn:disabled{ cursor:default; }
+           @keyframes shake{ 0%,100%{ transform: translateX(0); } 25%{ transform: translateX(-6px); } 75%{ transform: translateX(6px); } }
+           .reaction{ margin-top:22px; font-family:'Cormorant Garamond', serif; font-style:italic; color: var(--gold); min-height: 1.4em; }
+
+
+            /* ================= MAIN PAGE ================= */
+           .page{ position:relative; z-index:2; max-width: 680px; margin:0 auto; padding: 80px 24px 100px; display:none; }
+           .page.active{ display:block; }
+
+           .hero{ text-align:center; margin-bottom: 50px; }
+           .seal-mini{ width:56px; height:56px; border-radius:50%; background: radial-gradient(circle at 35% 30%, var(--rose), var(--deep-rose)); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin: 0 auto 22px; box-shadow: 0 10px 24px rgba(196,96,122,.4); animation: pulse 2.4s ease-in-out infinite; }
+            h1{ font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:600; font-size: clamp(2.2rem, 7vw, 3.4rem); color: var(--paper); margin:0 0 8px; line-height:1.1; min-height:1.2em; }
+           .subhead{ font-size:.92rem; color: var(--rose); }
+
+           /* ---- Letter card ---- */
+           .letter{ background: var(--paper); border-radius:18px; padding: 44px 36px; box-shadow: 0 28px 60px rgba(0,0,0,.5); position:relative; }
+           .letter::before{ content:""; position:absolute; top:0; left:0; right:0; height:6px; border-radius:18px 18px 0 0; background: linear-gradient(90deg, var(--rose), var(--gold), var(--rose)); }
+           #typed-message{ font-family:'Cormorant Garamond', serif; font-size: clamp(1.1rem, 3.2vw, 1.42rem); line-height:1.75; color: var(--plum); white-space: pre-wrap; text-align:left; min-height: 260px; }
+           .cursor{ display:inline-block; width:2px; background: var(--deep-rose); margin-left:2px; animation: blink .9s steps(1) infinite; }
+           @keyframes blink{ 50%{ opacity:0; } }
+          .signature{ margin-top:18px; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:1.2rem; color: var(--deep-rose); text-align:right; opacity:0; transition: opacity .8s ease; }
+          .signature.show{ opacity:1; }
+
+          /* ---- Live counter ---- */
+          .counter{ margin-top: 50px; text-align:center; opacity:0; transform: translateY(14px); transition: all .8s ease; }
+          .counter.show{ opacity:1; transform: translateY(0); }
+          .counter-label{ text-transform:uppercase; letter-spacing:.18em; font-size:.72rem; font-weight:700; color: var(--gold); margin-bottom:16px; }
+          .counter-grid{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+          .counter-item{ background: rgba(255,255,255,.06); border:1px solid rgba(232,166,184,.35); border-radius:14px; padding:16px 20px; min-width:76px; }
+          .counter-item span{ display:block; font-family:'Cormorant Garamond', serif; font-size:1.8rem; font-weight:600; color: var(--paper); }
+          .counter-item small{ font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color: var(--rose); }
+
+          /* ---- Scrapbook gallery ---- */
+          .scrapbook{ margin-top:64px; opacity:0; transform: translateY(16px); transition: all .9s ease; }
+          .scrapbook.show{ opacity:1; transform: translateY(0); }
+          .scrapbook-title{ text-align:center; font-family:'Caveat', cursive; font-size:1.9rem; color: var(--gold); margin-bottom:4px; }
+          .scrapbook-hint{ text-align:center; font-size:.78rem; color: var(--rose); opacity:.85; margin: 0 0 22px; }
+          .board{ display:flex; flex-wrap:wrap; justify-content:center; padding:10px; }
+          .photo{ background: var(--paper); padding:10px 10px 30px; border-radius:3px; box-shadow: 0 16px 30px rgba(0,0,0,.45); width:140px; position:relative; margin: 10px 8px; border:none; font-family:inherit; cursor:pointer; transition: box-shadow .25s ease; }
+          .photo:hover, .photo:focus-visible{ box-shadow: 0 22px 38px rgba(0,0,0,.55); }
+          .photo .frame{ width:100%; aspect-ratio:1/1; background: linear-gradient(135deg, var(--rose), var(--gold)); display:flex; align-items:center; justify-content:center; font-size:1.6rem; overflow:hidden; }
+          .photo .frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+          .photo .cap{ display:block; text-align:center; margin-top:9px; font-family:'Caveat', cursive; font-size:1.15rem; color: var(--plum-soft); }
+          .photo.p1{ transform: rotate(-7deg); }
+          .photo.p2{ transform: rotate(5deg) translateY(10px); }
+          .photo.p3{ transform: rotate(-3deg) translateY(-6px); }
+          .photo.p4{ transform: rotate(6deg); }
+          .tape{ position:absolute; top:-10px; left:50%; transform: translateX(-50%) rotate(-3deg); width:58px; height:20px; opacity:.9; }
+          .tape-gold{ background: repeating-linear-gradient(45deg, var(--gold), var(--gold) 6px, #f0d9a8 6px, #f0d9a8 12px); }
+          .tape-rose{ background: repeating-linear-gradient(45deg, var(--rose), var(--rose) 6px, #f3c6d3 6px, #f3c6d3 12px); }
+          .tape-cream{ background: repeating-linear-gradient(45deg, var(--paper), var(--paper) 6px, #f0e6da 6px, #f0e6da 12px); }
+
+         /* ---- Visor tipo cuaderno (modal) ---- */
+         .notebook-modal{ position:fixed; inset:0; z-index:30; display:none; align-items:center; justify-content:center; background: rgba(16,10,31,.86); padding:24px; }
+         .notebook-modal.active{ display:flex; animation: fadeIn .3s ease; }
+         .notebook-page{ position:relative; width:100%; max-width:340px; background: var(--paper); border-radius:6px; padding: 34px 28px 26px 46px; box-shadow: 0 30px 60px rgba(0,0,0,.55); background-image: repeating-linear-gradient(var(--paper) 0px, var(--paper) 27px, rgba(196,96,122,.15) 28px); }
+         .nb-spiral{ position:absolute; left:14px; top:12px; bottom:12px; width:8px; background-image: radial-gradient(circle, var(--night-mid) 2.6px, transparent 3px); background-size: 100% 20px; background-repeat: repeat-y; opacity:.45; }
+         .nb-close{ position:absolute; top:10px; right:12px; background:none; border:none; font-size:1.1rem; color: var(--plum-soft); cursor:pointer; line-height:1; }
+         .nb-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+         .nb-caption{ font-family:'Caveat', cursive; font-size:1.4rem; color: var(--plum-soft); text-align:center; margin:0 0 18px; }
+         .nb-nav{ display:flex; align-items:center; justify-content:center; gap:18px; }
+         .nb-btn{ background: var(--paper); border:1px solid var(--rose); color: var(--deep-rose); width:34px; height:34px; border-radius:50%; font-size:1.1rem; cursor:pointer; transition: all .2s ease; }
+         .nb-btn:hover{ background: var(--rose); color:#fff; }
+         .nb-count{ font-size:.8rem; color: var(--plum-soft); }
+
+         footer{ margin-top: 60px; text-align: center; font-size: .75rem; color: var(--rose); opacity: 0; transition: all 1s ease; }
+         footer.show {opacity: .8; }
+
+
+        /* ---- Cierre final ---- */
+         .finale{ margin-top:56px; padding-bottom:10px; text-align:center; opacity:0; transform: translateY(18px); transition: all 1s ease; }
+         .finale.show{ opacity:1; transform: translateY(0); }
+         .finale-text{ font-family:'Great Vibes', cursive; font-size: clamp(3rem, 13vw, 5.5rem); color: var(--rose); margin:0; line-height:1; text-shadow: 0 0 26px rgba(232,166,184,.5); }
+         .finale-mark{ display:flex; flex-direction:column; align-items:center; gap:8px; margin-top:12px; }
+         .finale-mark .heart-glyph{ font-size: clamp(1.6rem, 5vw, 2.2rem); line-height:1; animation: pulse 1.8s ease-in-out infinite; }
+
+        @media(max-width: 480px){
+            .letter{ padding: 34px 22px ;}
+            .photo { width: 112px; }
+            .envelope { width: 150px; height: 100px; }
+            .envelope-wrap{ width: 270px; height: 260px; margin-bottom: 4px; }
+        }
+    </style>
+
+
+</head>
+<body class="lock-scroll">
+
+<div id="sky"></div>
+<div id="sparkles"></div>
+
+<!-- ===== SCENE 1: sobre ===== -->
+ <section class="scene overlay active" id="scene-envelope">
+    <div class="envelope-wrap">
+      <div class="heart-frame" id="heart-frame" aria-hidden="true"></div>
+      <div class="envelope" id="envelope-btn" role="button" tabindex="0" aria-label="Abri el sobre">
+        <div class="env-back"></div>
+        <div class="env-flap"></div>
+        <div class="env-seal">💗</div>
+      </div>
+    </div>
+    <p class="hint"> Toca el sobre para abrilo</p> 
+ </section>
+
+ <!-- ===== SCENE 2: mini juego ===== -->
+ <section class="scene overlay" id="scene-question">
+    <p class="eyebrow">antes de nada...</p>
+    <h2 class=" question-title">Qué te dije la primera vez que te respondí una historia?" </h2>
+  <div class="options">
+    <button class="opt-btn" data-correct="false" data-reply="mmm, no. probá de nuevo 😉">Que lindo que te queda el flequillo </button>
+    <button class="opt-btn" data-correct="false" data-reply="cerca, pero todavía no 👀">Naa para mi lo tenes lindo el flequillo</button>
+    <button class="opt-btn" data-correct="true" data-reply="exacto. este fue el primero 💫">Me encanta como te queda el flequillo</button>
+  </div>
+  <p class="reaction" id="reaction"></p>
+ </section> 
+ <main class="page" id="page">
+
+    <div class=" hero">
+        <div class="seal-mini">💗</div>
+        <p class="eyebrow">para vos</p>
+        <h1 id="title"></h1>
+        <p class="subhead">un mensaje que estuve gauradando hace dias</p>
+    </div>
+
+    <div class="letter">
+        <div id="typed-menssage"></div>
+        <p class="signature" id="signature ">- con todo mi cariño </p>
+    </div>
+
+    <div class="counter" id="conter">
+       <p class="counter-label">llevamos juntos</p>
+       <div class="counter-grid">
+         <div class="counter-item"><span id="c-days">0</span><small>días</small></div>
+         <div class="counter-item"><span id="c-hours">0</span><small>horas</small></div>
+         <div class=" counter-item"><span id="c-mins">0</span><small>min</small></div>
+         <div class=" counter-item"><span id="c-secs">0</span><small>seg</small></div>
+       </div>
+    </div>
+    <div class="scrapbook" id="scrapbook">
+     <p class="scrapbook-title">nuestro cuadernito</p>
+     <p class="scrapbook-hint">tocá una foto para hojearlas</p>
+     <div class="board">
+       <button class="photo p1" type="button"><span class="tape tape-gold"><div class="frame"><img src="img/foto3.jpg"></div><span class="cap">el día que empezó todo</span></button>
+       <button class="photo p2" type="button"><span class="tape tape-rose"><div class="frame"><img src="img/foto1.jpg"></div><span class="cap">mi favorita</span></button>
+       <button class="photo p3" type="button"><span class="tape tape-cream"></span><div class="frame"><img src="img/foto2.jpg"></div><span class="cap">por mas fotos asi</span></button>
+       <button class="photo p4" type="button"><span class="tape tape-gold"></span><div class="frame"><img src="img/foto4.jpg"></div><span class="cap">mi lugar favorito sos vos</span></button>
+     </div>
+    </div>
+
+    <footer id="footer">hecho con cariño, especialmente para vos 🌙</footer>
+    
+    <div class="finale" id="finale">
+       <p class="finale-text">Te amo</p>
+         <div class="finale-mark">
+         <span class="heart-glyph">❤️</span>
+         <span class="dot"></span>
+       </div>
+   </div>
+</main>
+
+<!-- ===== VISOR TIPO CUADERNO ===== -->
+<div class="notebook-modal" id="notebook-modal">
+  <div class="notebook-page">
+    <button class="nb-close" id="nb-close" aria-label="Cerrar">✕</button>
+    <div class="nb-spiral"></div>
+    <div class="nb-frame" id="nb-frame">💗</div>
+    <p class="nb-caption" id="nb-caption"></p>
+    <div class="nb-nav">
+      <button class="nb-btn" id="nb-prev" aria-label="Foto anterior">‹</button>
+      <span class="nb-count" id="nb-count">1 / 4</span>
+      <button class="nb-btn" id="nb-next" aria-label="Foto siguiente">›</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ============ FONDO: estrellas + luces + destellos ============ */
+  const sky = document.getElementById('sky');
+  const starCount = window.innerWidth < 600 ? 45 : 80;
+  for(let i=0;i<starCount;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = 1 + Math.random()*2;
+    s.style.width = size+'px';
+    s.style.height = size+'px';
+    s.style.top = Math.random()*100+'%';
+    s.style.left = Math.random()*100+'%';
+    s.style.animationDuration = (2+Math.random()*3)+'s';
+    s.style.animationDelay = (Math.random()*3)+'s';
+    sky.appendChild(s);
+  }
+  const lightColors = ['#e8c07d','#e8a6b8','#fff9f2'];
+  const lightCount = window.innerWidth < 600 ? 10 : 16;
+  for(let i=0;i<lightCount;i++){
+    const l = document.createElement('div');
+    l.className = 'light';
+    l.style.left = (i*(100/(lightCount-1)))+'%';
+    l.style.top = (14 + Math.sin(i*0.9)*8)+'px';
+    l.style.color = lightColors[i % lightColors.length];
+    l.style.animationDuration = (1.6+Math.random()*2)+'s';
+    l.style.animationDelay = (Math.random()*2)+'s';
+    sky.appendChild(l);
+  }
+
+  const sparkleContainer = document.getElementById('sparkles');
+  const sparkSymbols = ['💗','💕','💖','💝','❤️','🧡','💛','💚','💙','💜','🤍','💞'];
+  const sparkCount = window.innerWidth < 600 ? 16 : 26;
+  for(let i=0;i<sparkCount;i++){
+    const el = document.createElement('div');
+    el.className = 'spark';
+    el.textContent = sparkSymbols[Math.floor(Math.random()*sparkSymbols.length)];
+    el.style.left = Math.random()*100+'vw';
+    el.style.fontSize = (0.8+Math.random()*1.1)+'rem';
+    el.style.animationDuration = (10+Math.random()*10)+'s, '+(3+Math.random()*3)+'s';
+    el.style.animationDelay = (Math.random()*10)+'s, 0s';
+    sparkleContainer.appendChild(el);
+  }
+
+  const glintCount = window.innerWidth < 600 ? 16 : 24;
+  for(let i=0;i<glintCount;i++){
+    const g = document.createElement('div');
+    g.className = 'glint';
+    const size = 3 + Math.random()*4;
+    g.style.width = size+'px';
+    g.style.height = size+'px';
+    g.style.left = Math.random()*100+'vw';
+    g.style.animationDuration = (7+Math.random()*8)+'s, '+(2.5+Math.random()*2.5)+'s';
+    g.style.animationDelay = (Math.random()*8)+'s, 0s';
+    sparkleContainer.appendChild(g);
+  }
+
+  /* ============ CORAZÓN GRANDE, ARMADO DE MINI-CORAZONES (estilo pixel/juego) ============ */
+  // ✏️ Cada fila es una línea de "pixeles": '#' = corazón base, '*' = corazón brillante, '.' = vacío
+  const heartBitmap = [
+    ".##...##.",
+    "*###.####",
+    "#########",
+    "#########",
+    ".#######.",
+    "..#####..",
+    "...###...",
+    "....#...."
+  ];
+  const heartUnitBase = '❤️';
+  const heartUnitShine = '💗';
+  const heartFrame = document.getElementById('heart-frame');
+  const wrapSize = Math.min(heartFrame.clientWidth, heartFrame.clientHeight);
+  const pixelSize = Math.floor((wrapSize * 0.78) / 9);
+  const pixelHeart = document.createElement('div');
+  pixelHeart.className = 'pixel-heart';
+  pixelHeart.style.width = (pixelSize * 9) + 'px';
+  pixelHeart.style.height = (pixelSize * 8) + 'px';
+  heartBitmap.forEach(row => {
+    row.split('').forEach(ch => {
+      const cell = document.createElement('div');
+      cell.className = 'pixel-cell';
+      if(ch === '#' || ch === '*'){
+        const unit = document.createElement('span');
+        unit.className = 'unit';
+        unit.textContent = ch === '*' ? heartUnitShine : heartUnitBase;
+        unit.style.fontSize = (pixelSize * 0.95) + 'px';
+        unit.style.animationDuration = (1.3 + Math.random()*1.4) + 's';
+        unit.style.animationDelay = (Math.random()*1.5) + 's';
+        cell.appendChild(unit);
+      }
+      pixelHeart.appendChild(cell);
+    });
+  });
+  heartFrame.appendChild(pixelHeart);
+    /* ============ ESCENA 1: sobre ============ */
+  const envelope = document.getElementById('envelope-btn');
+  const sceneEnvelope = document.getElementById('scene-envelope');
+  const sceneQuestion = document.getElementById('scene-question');
+
+  function openEnvelope(){
+    if(envelope.classList.contains('open')) return;
+    envelope.classList.add('open');
+    setTimeout(() => {
+      sceneEnvelope.classList.remove('active');
+      sceneQuestion.classList.add('active');
+    }, 750);
+  }
+  envelope.addEventListener('click', openEnvelope);
+  envelope.addEventListener('keydown', (e) => { if(e.key==='Enter' || e.key===' ') openEnvelope(); });
+
+  /* ============ ESCENA 2: mini juego (una sola respuesta correcta) ============ */
+  const reactionEl = document.getElementById('reaction');
+  const optButtons = document.querySelectorAll('.opt-btn');
+  const page = document.getElementById('page');
+
+  optButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      reactionEl.textContent = btn.dataset.reply;
+      if(btn.dataset.correct === 'true'){
+        optButtons.forEach(b => { b.disabled = true; });
+        btn.classList.add('correct');
+        setTimeout(() => {
+          sceneQuestion.classList.remove('active');
+          document.body.classList.remove('lock-scroll');
+          page.classList.add('active');
+          startMainSequence();
+        }, 1400);
+      } else {
+        btn.classList.remove('wrong');
+        void btn.offsetWidth; // reinicia la animación si se toca de nuevo
+        btn.classList.add('wrong');
+      }
+    });
+  });
+
+  /* ============ MÁQUINA DE ESCRIBIR ============ */
+  function typeInto(el, text, speed, onDone){
+    let i = 0;
+    el.innerHTML = '';
+    const cursor = document.createElement('span');
+    cursor.className = 'cursor';
+    cursor.textContent = '\u00A0';
+    el.appendChild(cursor);
+    function step(){
+      if(i < text.length){
+        cursor.insertAdjacentText('beforebegin', text.charAt(i));
+        i++;
+        setTimeout(step, speed);
+      } else {
+        cursor.remove();
+        if(onDone) onDone();
+      }
+    }
+    step();
+  }
+
+  const titletext = "Feliz Segundo Mes";
+
+  const mensagetext =
+  `Hola, mi amor.
+
+  Dos meses no es mucho tiempo, pero alcanzó para que te vuelvas parte de mis días sin que me diera cuenta cuándo pasó. Me quedo con cada charla larga, cada tontería que ya es nuestra, y las ganas de seguir sumando fechas como esta.
+
+  Gracias por bancarte mis días raros y por elegirme, un poco más, cada día.
+
+  Feliz segundo mes. Te amo.`;
+
+   function startMainSequence(){
+    const titleEl = document.getElementById('title');
+    const msgEl = document.getElementById('typed-message');
+    const signature = document.getElementById('signature');
+    const counter = document.getElementById('counter');
+    const scrapbook = document.getElementById('scrapbook');
+    const footer = document.getElementById('footer');
+    const finale = document.getElementById('finale');
+
+    typeInto(titleEl, titleText, 70, () => {
+      setTimeout(() => {
+        typeInto(msgEl, messageText, 28, () => {
+          signature.classList.add('show');
+          setTimeout(() => counter.classList.add('show'), 300);
+          setTimeout(() => scrapbook.classList.add('show'), 750);
+          setTimeout(() => footer.classList.add('show'), 1150);
+          setTimeout(() => finale.classList.add('show'), 1650);
+        });
+      }, 400);
+    });
+  }
+
+  /* ============ CONTADOR EN VIVO ============ */
+  const startDate = new Date('2026-07-10T21:40:00');
+
+  function updateCounter(){
+    const now = new Date();
+    let diff = now - startDate;
+    if(diff < 0) diff = 0;
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff / (1000*60*60)) % 24);
+    const mins = Math.floor((diff / (1000*60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+    document.getElementById('c-days').textContent = days;
+    document.getElementById('c-hours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('c-mins').textContent = String(mins).padStart(2,'0');
+    document.getElementById('c-secs').textContent = String(secs).padStart(2,'0');
+  }
+  updateCounter();
+  setInterval(updateCounter, 1000);
+
+  /* ============ VISOR TIPO CUADERNO ============ */
+  const photoButtons = document.querySelectorAll('.photo');
+  const photosData = Array.from(photoButtons).map(btn => ({
+    frameHTML: btn.querySelector('.frame').innerHTML,
+    caption: btn.querySelector('.cap').textContent
+  }));
+
+  const notebookModal = document.getElementById('notebook-modal');
+  const nbFrame = document.getElementById('nb-frame');
+  const nbCaption = document.getElementById('nb-caption');
+  const nbCount = document.getElementById('nb-count');
+  let currentPhoto = 0;
+
+  function renderNotebook(){
+    const data = photosData[currentPhoto];
+    nbFrame.innerHTML = data.frameHTML;
+    nbCaption.textContent = data.caption;
+    nbCount.textContent = (currentPhoto + 1) + ' / ' + photosData.length;
+  }
+  function openNotebook(index){
+    currentPhoto = index;
+    renderNotebook();
+    notebookModal.classList.add('active');
+  }
+  function closeNotebook(){
+    notebookModal.classList.remove('active');
+  }
+
+  photoButtons.forEach((btn, idx) => {
+    btn.addEventListener('click', () => openNotebook(idx));
+  });
+  document.getElementById('nb-close').addEventListener('click', closeNotebook);
+  document.getElementById('nb-prev').addEventListener('click', () => {
+    currentPhoto = (currentPhoto - 1 + photosData.length) % photosData.length;
+    renderNotebook();
+  });
+  document.getElementById('nb-next').addEventListener('click', () => {
+    currentPhoto = (currentPhoto + 1) % photosData.length;
+    renderNotebook();
+  });
+  notebookModal.addEventListener('click', (e) => {
+    if(e.target === notebookModal) closeNotebook();
+  });
+  document.addEventListener('keydown', (e) => {
+    if(!notebookModal.classList.contains('active')) return;
+    if(e.key === 'Escape') closeNotebook();
+    if(e.key === 'ArrowLeft') document.getElementById('nb-prev').click();
+    if(e.key === 'ArrowRight') document.getElementById('nb-next').click();
+  });
+ 
+</script>
+
+</body>
+</html>
